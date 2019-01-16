@@ -1,0 +1,25 @@
+h3 {
+	color: orange;
+	height: 30px;
+	text-align: right;
+}
+
+main {
+	width: 800px;
+	height: 650px;
+	margin: auto;
+}
+
+.flex-container {
+	height: 550px;
+	display: flex;
+}
+
+section {
+	width: 800px;
+}
+
+aside {
+	width: 200;
+	margin-top: 200px;
+}
