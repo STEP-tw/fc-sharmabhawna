@@ -27,6 +27,9 @@ const app = (req, res) => {
 	if (req.url == "/flowers.jpg") {
 		readFile("./flowers.jpg", reader);
 	}
+	if (req.url == "/blink.js") {
+		readFile("./src/blink.js", reader);
+	}
 };
 
 // Export a function that can act as a handler

@@ -1,16 +1,25 @@
 <html>
 	<head>
 		<link href="/style.css" rel="styleSheet" />
+		<script src="./blink.js"></script>
 	</head>
 	<body>
 		<main>
-			<h3>Flower Catalog</h3>
+			<h2 class="head_line">Flower Catalog</h2>
 			<div class="flex-container">
 				<section><img src="/flowers.jpg" alt="flower" /></section>
 				<aside>
-					<a href="">Abeliophyllum</a> <a href="">Ageratum</a>
-					<img src="/watering_jar.gif" alt="watering" />
-					<a href="">Guest Book</a>
+					<ul>
+						<li><a href="">Abeliophyllum</a></li>
+						<li><a href="">Ageratum</a></li>
+						<img
+							id="jar"
+							src="/watering_jar.gif"
+							alt="watering"
+							onclick="blink()"
+						/>
+						<a href="">Guest Book</a>
+					</ul>
 				</aside>
 			</div>
 		</main>
