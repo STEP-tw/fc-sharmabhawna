@@ -7,41 +7,25 @@ const send = function(res, statusCode, content) {
 };
 
 const app = (req, res) => {
+	const reader = function(err, data) {
+		if (err) {
+			send(res, 404, "No such file found");
+			return;
+		}
+		send(res, 200, data);
+	};
+
 	if (req.url == "/") {
-		readFile("./index.html", (err, data) => {
-			if (err) {
-				send(res, 404, "No such file found");
-				return;
-			}
-			send(res, 200, data);
-		});
+		readFile("./index.html", reader);
 	}
 	if (req.url == "/style.css") {
-		readFile("./style.css", (err, data) => {
-			if (err) {
-				send(res, 404, "No such file found");
-				return;
-			}
-			send(res, 200, data);
-		});
+		readFile("./style.css", reader);
 	}
 	if (req.url == "/watering_jar.gif") {
-		readFile("./watering_jar.gif", (err, data) => {
-			if (err) {
-				send(res, 404, "No such file found");
-				return;
-			}
-			send(res, 200, data);
-		});
+		readFile("./watering_jar.gif", reader);
 	}
 	if (req.url == "/flowers.jpg") {
-		readFile("./flowers.jpg", (err, data) => {
-			if (err) {
-				send(res, 404, "No such file found");
-				return;
-			}
-			send(res, 200, data);
-		});
+		readFile("./flowers.jpg", reader);
 	}
 };
 
