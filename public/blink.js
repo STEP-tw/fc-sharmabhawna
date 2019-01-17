@@ -3,5 +3,3 @@ const blink = function() {
 	jar.style.visibility = "hidden";
 	setTimeout(() => (jar.style.visibility = "visible"), 1000);
 };
-
-window.onload = initialize;

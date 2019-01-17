@@ -1,8 +1,19 @@
-.head_line {
+.headline {
 	color: orange;
 	margin-top: 30px;
 	text-align: right;
 	margin-right: 160px;
+}
+
+.guest_headline {
+	font-size: 40px;
+	text-align: center;
+	color: orange;
+}
+
+.comment_box_heading {
+	font-size: 25px;
+	padding: 5px;
 }
 
 main {
