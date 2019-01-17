@@ -18,8 +18,8 @@ class Handler {
 		this.routes.push({ method: "GET", handler: url });
 	}
 
-	post(url) {
-		this.routes.push({ method: "POST", handler: url });
+	post(url, handler) {
+		this.routes.push({ method: "POST", handler: handler });
 	}
 
 	handleRequest(req, res) {

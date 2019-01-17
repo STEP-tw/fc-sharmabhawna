@@ -33,9 +33,20 @@ const readBody = function(req, res, next) {
 	let data = new Data();
 	req.on("data", data.appendData.bind(data));
 	req.on("end", () => {
-		req.body = data;
+		req.body = data.data;
 		next();
 	});
+};
+
+const readArgs = function(text) {
+	let keyValuePairs = text.split("&");
+	return keyValuePairs.reduce((accumulator, keyValuePair) => {
+		let keyAndValue = keyValuePair.split("=");
+		let key = keyAndValue[0];
+		let value = keyAndValue[1];
+		accumulator[key] = value;
+		return accumulator;
+	}, {});
 };
 
 const logRequest = function(req, res, next) {
@@ -62,8 +73,22 @@ const renderFileContent = function(req, res) {
 	readFileContent(filePath, res);
 };
 
+let count = 0;
+
+const renderGuestBookWithCommentDetails = function(req, res) {
+	let text = req.body;
+	let args = readArgs(text);
+	let { name, comment } = args;
+	let date = new Date().toLocaleString();
+	let commentDetail = JSON.stringify({ name, comment, date });
+	fs.appendFile("./src/comments_log.JSON", commentDetail, err => {
+		return;
+	});
+};
+
 app.use(readBody);
 app.use(logRequest);
 app.get(renderFileContent);
+app.post("/guest_book.html", renderGuestBookWithCommentDetails);
 
 module.exports = app.handleRequest.bind(app);
