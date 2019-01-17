@@ -6,7 +6,7 @@ const send = function(res, statusCode, content) {
 	res.end();
 };
 
-const getReqiuredFilePath = function(url) {
+const getFilePath = function(url) {
 	if (url == "/") {
 		return "./index.html";
 	}
@@ -21,7 +21,8 @@ const app = (req, res) => {
 		}
 		send(res, 200, data);
 	};
-	readFile(getReqiuredFilePath(req.url), reader);
+	let filePath = getFilePath(req.url);
+	readFile(filePath, reader);
 };
 
 // Export a function that can act as a handler
