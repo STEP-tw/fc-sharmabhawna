@@ -8,10 +8,6 @@ const send = function(res, statusCode, content) {
 
 const app = (req, res) => {
 	const reader = function(err, data) {
-		if (err) {
-			send(res, 404, "No such file found");
-			return;
-		}
 		send(res, 200, data);
 	};
 
