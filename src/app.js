@@ -10,7 +10,7 @@ const getFilePath = function(url) {
 	if (url == "/") {
 		return "./index.html";
 	}
-	return "." + url;
+	return "./public" + url;
 };
 
 const app = (req, res) => {
@@ -21,6 +21,7 @@ const app = (req, res) => {
 		}
 		send(res, 200, data);
 	};
+
 	let filePath = getFilePath(req.url);
 	readFile(filePath, reader);
 };
