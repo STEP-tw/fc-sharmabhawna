@@ -1,5 +1,5 @@
 const fs = require("fs");
-const comments = require("./comments_log.JSON");
+const comments = require("./comments_log.json");
 const Handler = require("./requestHandler.js");
 const app = new Handler();
 
@@ -83,9 +83,10 @@ const renderGuestBookWithCommentDetails = function(req, res) {
 	let date = new Date().toLocaleString();
 	let commentDetail = { name, comment, date };
 	comments[count++] = commentDetail;
-	fs.writeFile("./src/comments_log.JSON", JSON.stringify(comments), err => {
+	fs.writeFile("./src/comments_log.json", JSON.stringify(comments), err => {
 		return;
 	});
+	send(res, 200, "ok");
 };
 
 app.use(readBody);
