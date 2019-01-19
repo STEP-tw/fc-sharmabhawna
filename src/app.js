@@ -73,8 +73,8 @@ const renderFileContent = function(req, res) {
 	readFileContent(filePath, res);
 };
 
-const transformIntoHTML = function(commentsDetails) {
-	let tableHeader = `<thead>
+const createCommentsTable = function(rows) {
+	return `<table> <thead>
 	<th>
 			<tr>
 				<td>DATETIME</td>
@@ -82,19 +82,18 @@ const transformIntoHTML = function(commentsDetails) {
 				<td>COMMENTSLIST</td>
 			</tr>
 			</th>
-		</thead>`;
-	return (
-		tableHeader +
-		("<table>" +
-			commentsDetails
-				.map(commentDetail => {
-					return `<tr> <td>${commentDetail.date}</td> <td>${
-						commentDetail.name
-					}</td> <td>${commentDetail.comment}</td> </tr>`;
-				})
-				.join("") +
-			"</table>")
-	);
+		</thead> ${rows} </table>`;
+};
+
+const createCommentRow = function(commentDetail) {
+	return `<tr> <td>${commentDetail.date}</td> <td>${
+		commentDetail.name
+	}</td> <td>${commentDetail.comment}</td> </tr>`;
+};
+
+const transformIntoHTML = function(commentsDetails) {
+	let comments = commentsDetails.map(createCommentRow).join("");
+	return createCommentsTable(comments);
 };
 
 class Comments {
@@ -111,7 +110,6 @@ class Comments {
 
 	appendComment(comment) {
 		this.commentsDetails.unshift(comment);
-		console.log(this.commentsDetails);
 		fs.writeFile(
 			"./src/comments_log.json",
 			JSON.stringify(this.commentsDetails),
