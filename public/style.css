@@ -1,19 +1,14 @@
-.headline {
+.main_headline {
 	color: orange;
 	margin-top: 30px;
 	text-align: right;
 	margin-right: 160px;
 }
 
-.guest_headline {
+.sub_headline {
 	font-size: 40px;
 	text-align: center;
 	color: orange;
-}
-
-.comment_box_heading {
-	font-size: 25px;
-	padding: 5px;
 }
 
 main {
@@ -40,7 +35,35 @@ aside {
 	justify-content: center;
 }
 
+.comment_box_heading {
+	font-size: 25px;
+	padding: 5px;
+}
+
 .comment_box {
 	height: 160px;
 	border-bottom: 1px solid black;
+}
+
+.container {
+	border-top: 1px solid black;
+	display: flex;
+}
+
+.sub_img {
+	height: 600px;
+	padding: 10px;
+}
+
+.data_container {
+	margin-top: 250px;
+	padding: 10px;
+}
+
+.home_page_link {
+	color: slateblue;
+}
+
+.download_link {
+	color: blue;
 }
