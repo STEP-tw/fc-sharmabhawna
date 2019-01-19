@@ -2,19 +2,13 @@
 	color: orange;
 	margin-top: 30px;
 	text-align: right;
-	margin-right: 160px;
+	margin-right: 300px;
 }
 
 .sub_headline {
 	font-size: 40px;
 	text-align: center;
 	color: orange;
-}
-
-main {
-	width: 800px;
-	height: 650px;
-	margin: auto;
 }
 
 .flex-container {
@@ -25,11 +19,13 @@ main {
 }
 
 section {
-	width: 800px;
+	width: 1200px;
+	height: 550px;
 }
 
 aside {
-	width: 200;
+	width: 500;
+	height: 550px;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
@@ -48,6 +44,11 @@ aside {
 .container {
 	border-top: 1px solid black;
 	display: flex;
+}
+
+.main_image {
+	width: 1000px;
+	height: 550px;
 }
 
 .sub_img {
