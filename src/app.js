@@ -58,7 +58,7 @@ const logRequest = function(req, res, next) {
 
 const reader = function(res, err, content) {
 	if (err) {
-		send(res, 404, "No such file found");
+		send(res, 404, "Not found");
 		return;
 	}
 	send(res, 200, content);
@@ -73,21 +73,81 @@ const renderFileContent = function(req, res) {
 	readFileContent(filePath, res);
 };
 
-const renderGuestBookWithCommentDetails = function(req, res) {
+const transformIntoHTML = function(commentsDetails) {
+	let tableHeader = `<thead>
+	<th>
+			<tr>
+				<td>DATETIME</td>
+				<td>NAME</td>
+				<td>COMMENTSLIST</td>
+			</tr>
+			</th>
+		</thead>`;
+	return (
+		tableHeader +
+		("<table>" +
+			commentsDetails
+				.map(commentDetail => {
+					return `<tr> <td>${commentDetail.date}</td> <td>${
+						commentDetail.name
+					}</td> <td>${commentDetail.comment}</td> </tr>`;
+				})
+				.join("") +
+			"</table>")
+	);
+};
+
+class Comments {
+	constructor() {
+		this.commentsDetails = "";
+		this.getComments();
+	}
+
+	getComments() {
+		fs.readFile("./src/comments_log.json", "utf8", (err, content) => {
+			this.commentsDetails = JSON.parse(content);
+		});
+	}
+
+	appendComment(comment) {
+		this.commentsDetails.unshift(comment);
+		console.log(this.commentsDetails);
+		fs.writeFile(
+			"./src/comments_log.json",
+			JSON.stringify(this.commentsDetails),
+			err => {
+				return;
+			}
+		);
+		this.getComments();
+	}
+}
+
+let comments = new Comments();
+
+const renderGuestBook = function(req, res) {
+	let commentsDetails = comments.commentsDetails;
+	let filePath = getFilePath(req.url);
+	fs.readFile(filePath, "utf8", (err, content) => {
+		commentsDetails = transformIntoHTML(commentsDetails);
+		send(res, 200, content + commentsDetails);
+	});
+};
+
+const renderModifiedGuestBook = function(req, res) {
 	let text = req.body;
 	let args = readArgs(text);
 	let { name, comment } = args;
 	let date = new Date().toLocaleString();
-	let commentDetail = JSON.stringify({ name, comment, date });
-	fs.appendFile("./src/comments_log.json", commentDetail + ",", err => {
-		return;
-	});
-	send(res, 200, "ok");
+	let commentDetail = { name, comment, date };
+	comments.appendComment(commentDetail);
+	renderGuestBook(req, res);
 };
 
 app.use(readBody);
 app.use(logRequest);
-app.get(renderFileContent);
-app.post("/guest_book.html", renderGuestBookWithCommentDetails);
+app.get("/guest_book.html", renderGuestBook);
+app.post("/guest_book.html", renderModifiedGuestBook);
+app.use(renderFileContent);
 
 module.exports = app.handleRequest.bind(app);

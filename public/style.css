@@ -39,3 +39,8 @@ aside {
 	flex-direction: column;
 	justify-content: center;
 }
+
+.comment_box {
+	height: 160px;
+	border-bottom: 1px solid black;
+}

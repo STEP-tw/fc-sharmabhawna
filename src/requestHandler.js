@@ -2,6 +2,9 @@ const isMatching = function(req, route) {
 	if (route.method && req.method != route.method) {
 		return false;
 	}
+	if (route.method && req.url != route.url) {
+		return false;
+	}
 	return true;
 };
 
@@ -10,16 +13,16 @@ class Handler {
 		this.routes = [];
 	}
 
-	use(url) {
-		this.routes.push({ handler: url });
+	use(handler) {
+		this.routes.push({ handler });
 	}
 
-	get(url) {
-		this.routes.push({ method: "GET", handler: url });
+	get(url, handler) {
+		this.routes.push({ method: "GET", url, handler });
 	}
 
 	post(url, handler) {
-		this.routes.push({ method: "POST", handler: handler });
+		this.routes.push({ method: "POST", url, handler });
 	}
 
 	handleRequest(req, res) {
