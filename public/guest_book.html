@@ -1,15 +1,7 @@
 <html>
 	<head>
 		<link href="/style.css" rel=" stylesheet" />
-		<script>
-			const updateComments = function () {
-				fetch("/comments").then(function(response){
-					return response.text();
-				}).then(function(comments){
-					document.getElementById("comments_container").innerHTML = comments;
-				})
-			};
-		</script>
+		<script src="/main.js"></script>
 	</head>
 	<body>
 		<header class="sub_headline">
