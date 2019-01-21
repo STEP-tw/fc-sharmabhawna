@@ -103,8 +103,9 @@ class Comments {
 	}
 
 	readCommentsFile() {
-		let comments = fs.readFileSync(COMMENTS_FILE_PATH, "utf8");
-		this.commentsDetails = JSON.parse(comments);
+		fs.readFile(COMMENTS_FILE_PATH, "utf8", (err, comments) => {
+			this.commentsDetails = JSON.parse(comments);
+		});
 	}
 
 	getComments() {
