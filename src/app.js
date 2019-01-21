@@ -147,10 +147,15 @@ const renderModifiedGuestBook = function(req, res) {
 	renderGuestBook(req, res);
 };
 
+const updateGuestBook = function(req, res) {
+	send(res, 200, transformIntoHTML(comments.commentsDetails));
+};
+
 app.use(readBody);
 app.use(logRequest);
 app.get("/guest_book.html", renderGuestBook);
 app.post("/guest_book.html", renderModifiedGuestBook);
+app.get("/comments", updateGuestBook);
 app.use(renderFileContent);
 
 module.exports = app.handleRequest.bind(app);

@@ -1,6 +1,15 @@
 <html>
 	<head>
 		<link href="/style.css" rel=" stylesheet" />
+		<script>
+			const updateComments = function () {
+				fetch("/comments").then(function(response){
+					return response.text();
+				}).then(function(comments){
+					document.getElementById("comments_container").innerHTML = comments;
+				})
+			};
+		</script>
 	</head>
 	<body>
 		<header class="sub_headline">
@@ -15,6 +24,7 @@
 				<button type="submit">Submit</button>
 			</form>
 		</div>
-		<div>__COMMENTS__</div>
+		<label>Comments</label> <button onclick="updateComments()">&#x21bb</button>
+		<div id="comments_container">__COMMENTS__</div>
 	</body>
 </html>
