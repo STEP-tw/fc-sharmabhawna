@@ -1,6 +1,7 @@
 const fs = require("fs");
 const Handler = require("./requestHandler.js");
 const app = new Handler();
+const COMMENTS_FILE_PATH = "./src/comments_log.json";
 
 class Data {
 	constructor() {
@@ -99,32 +100,34 @@ const transformIntoHTML = function(commentsDetails) {
 class Comments {
 	constructor() {
 		this.commentsDetails = "";
-		this.getComments();
+	}
+
+	readCommentsFile() {
+		let comments = fs.readFileSync(COMMENTS_FILE_PATH, "utf8");
+		this.commentsDetails = JSON.parse(comments);
 	}
 
 	getComments() {
-		fs.readFile("./src/comments_log.json", "utf8", (err, content) => {
-			this.commentsDetails = JSON.parse(content);
-		});
+		return this.commentsDetails;
 	}
 
 	appendComment(comment) {
 		this.commentsDetails.unshift(comment);
 		fs.writeFile(
-			"./src/comments_log.json",
+			COMMENTS_FILE_PATH,
 			JSON.stringify(this.commentsDetails),
 			err => {
 				return;
 			}
 		);
-		this.getComments();
 	}
 }
 
 let comments = new Comments();
+comments.readCommentsFile();
 
 const renderGuestBook = function(req, res) {
-	let commentsDetails = comments.commentsDetails;
+	let commentsDetails = comments.getComments();
 	let filePath = getFilePath(req.url);
 	fs.readFile(filePath, "utf8", (err, content) => {
 		commentsDetails = transformIntoHTML(commentsDetails);
