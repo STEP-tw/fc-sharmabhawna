@@ -132,7 +132,8 @@ const renderGuestBook = function(req, res) {
 	let filePath = getFilePath(req.url);
 	fs.readFile(filePath, "utf8", (err, content) => {
 		commentsDetails = transformIntoHTML(commentsDetails);
-		send(res, 200, content + commentsDetails);
+		content = content.replace("__COMMENTS__", commentsDetails);
+		send(res, 200, content);
 	});
 };
 
