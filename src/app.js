@@ -100,11 +100,8 @@ const transformIntoHTML = function(commentsDetails) {
 };
 
 const renderGuestBook = function(req, res) {
-	let commentsDetails = comments.getComments();
 	let filePath = getFilePath(req.url);
 	fs.readFile(filePath, "utf8", (err, content) => {
-		commentsDetails = transformIntoHTML(commentsDetails);
-		content = content.replace("__COMMENTS__", commentsDetails);
 		send(res, 200, content);
 	});
 };
