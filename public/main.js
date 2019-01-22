@@ -4,7 +4,7 @@ const blink = function() {
 	setTimeout(() => (jar.style.visibility = "visible"), 1000);
 };
 
-const updateComments = function() {
+const refreshComments = function() {
 	fetch("/comments")
 		.then(function(response) {
 			return response.text();
