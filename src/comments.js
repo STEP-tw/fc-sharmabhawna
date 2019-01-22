@@ -7,9 +7,8 @@ class Comments {
 	}
 
 	readCommentsFile() {
-		fs.readFile(COMMENTS_FILE_PATH, "utf8", (err, comments) => {
-			this.commentsDetails = JSON.parse(comments);
-		});
+		let commentsDetails = fs.readFileSync(COMMENTS_FILE_PATH, "utf8");
+		this.commentsDetails = JSON.parse(commentsDetails);
 	}
 
 	getComments() {
