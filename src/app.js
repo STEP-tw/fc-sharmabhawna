@@ -106,25 +106,21 @@ const renderGuestBook = function(req, res) {
 	});
 };
 
-const renderModifiedGuestBook = function(req, res) {
-	let text = req.body;
-	let args = readArgs(text);
-	let { name, comment } = args;
-	let date = new Date().toLocaleString();
-	let commentDetail = { name, comment, date };
-	comments.appendComment(commentDetail);
-	renderGuestBook(req, res);
+const provideComments = function(req, res) {
+	send(res, 200, transformIntoHTML(comments.commentsDetails));
 };
 
-const refreshComments = function(req, res) {
-	send(res, 200, transformIntoHTML(comments.commentsDetails));
+const updateComments = function(req, res) {
+	let commentDetail = JSON.parse(req.body);
+	comments.appendComment(commentDetail);
+	send(res, 200, "ok");
 };
 
 app.use(readBody);
 app.use(logRequest);
 app.get("/guest_book.html", renderGuestBook);
-app.post("/guest_book.html", renderModifiedGuestBook);
-app.get("/comments", refreshComments);
+app.get("/comments", provideComments);
+app.post("/comments", updateComments);
 app.use(renderFileContent);
 
 module.exports = app.handleRequest.bind(app);

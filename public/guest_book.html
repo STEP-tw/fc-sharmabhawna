@@ -10,13 +10,13 @@
 		<div class="comment_box">
 			<header class="comment_box_heading">Leave a comment</header>
 			<form method="POST" action="/guest_book.html">
-				<label>Name:</label> <input type="text" name="name" /><br /><br />
+				<label>Name:</label> <input id="name_holder" type="text" name="name" /><br /><br />
 				<label>Comment:</label>
-				<textarea type="text" name="comment"></textarea> <br /><br />
-				<button type="submit">Submit</button>
+				<textarea id="comment_holder" type="text" name="comment"></textarea> <br /><br />
+				<button onclick="addComment()">Submit</button>
 			</form>
 		</div>
-		<label style="font-size: 30px;">Comments</label> <button style="font-size: 30px;" onclick="refreshComments()">&#x21bb</button>
+		<label style="font-size: 30px;">Comments</label> <button style="font-size: 30px;" onclick="getComments()">&#x21bb</button>
 		<div id="comments_container">__COMMENTS__</div>
 	</body>
 </html>
