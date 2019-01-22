@@ -1,7 +1,9 @@
 const fs = require("fs");
 const Handler = require("./requestHandler.js");
 const app = new Handler();
-const COMMENTS_FILE_PATH = "./src/comments_log.json";
+const Comments = require("./comments.js");
+let comments = new Comments();
+comments.readCommentsFile();
 
 class Data {
 	constructor() {
@@ -96,36 +98,6 @@ const transformIntoHTML = function(commentsDetails) {
 	let comments = commentsDetails.map(createCommentRow).join("");
 	return createCommentsTable(comments);
 };
-
-class Comments {
-	constructor() {
-		this.commentsDetails = "";
-	}
-
-	readCommentsFile() {
-		fs.readFile(COMMENTS_FILE_PATH, "utf8", (err, comments) => {
-			this.commentsDetails = JSON.parse(comments);
-		});
-	}
-
-	getComments() {
-		return this.commentsDetails;
-	}
-
-	appendComment(comment) {
-		this.commentsDetails.unshift(comment);
-		fs.writeFile(
-			COMMENTS_FILE_PATH,
-			JSON.stringify(this.commentsDetails),
-			err => {
-				return;
-			}
-		);
-	}
-}
-
-let comments = new Comments();
-comments.readCommentsFile();
 
 const renderGuestBook = function(req, res) {
 	let commentsDetails = comments.getComments();
