@@ -1,6 +1,10 @@
-const fs = require("fs");
 const Handler = require("./requestHandler.js");
 const app = new Handler();
+
+const StaticFiles = require("./staticFiles.js");
+const staticFiles = new StaticFiles();
+staticFiles.readFiles();
+
 const Comments = require("./comments.js");
 let comments = new Comments();
 comments.readCommentsFile();
@@ -23,13 +27,6 @@ const send = function(res, statusCode, content) {
 	res.statusCode = statusCode;
 	res.write(content);
 	res.end();
-};
-
-const getFilePath = function(url) {
-	if (url == "/") {
-		return "./index.html";
-	}
-	return "./public" + url;
 };
 
 const readBody = function(req, res, next) {
@@ -59,21 +56,13 @@ const logRequest = function(req, res, next) {
 	next();
 };
 
-const reader = function(res, err, content) {
-	if (err) {
-		send(res, 404, "Not found");
+const renderFileContent = function(req, res) {
+	let content = staticFiles.getContent(req.url);
+	if (content) {
+		send(res, 200, content);
 		return;
 	}
-	send(res, 200, content);
-};
-
-const readFileContent = function(filePath, res) {
-	fs.readFile(filePath, reader.bind("null", res));
-};
-
-const renderFileContent = function(req, res) {
-	let filePath = getFilePath(req.url);
-	readFileContent(filePath, res);
+	send(res, 404, "Not Found");
 };
 
 const createCommentsTable = function(rows) {
@@ -118,9 +107,9 @@ const updateComments = function(req, res) {
 
 app.use(readBody);
 app.use(logRequest);
-app.get("/guest_book.html", renderGuestBook);
-app.get("/comments", provideComments);
-app.post("/comments", updateComments);
+//app.get("/guest_book.html", renderGuestBook);
+// app.get("/comments", provideComments);
+// app.post("/comments", updateComments);
 app.use(renderFileContent);
 
 module.exports = app.handleRequest.bind(app);
