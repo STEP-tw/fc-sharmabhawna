@@ -35,6 +35,18 @@ class StaticFiles {
 		this.files["/documents/Ageratum.pdf"] = fs.readFileSync(
 			"./public/documents/Ageratum.pdf"
 		);
+		this.files["/comment_form.html"] = fs.readFileSync(
+			"./public/comment_form.html",
+			"utf8"
+		);
+		this.files["/login_form.html"] = fs.readFileSync(
+			"./public/login_form.html",
+			"utf8"
+		);
+		this.files["/guestBook.js"] = fs.readFileSync(
+			"./public/guestBook.js",
+			"utf8"
+		);
 	}
 
 	getContent(url) {

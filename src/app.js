@@ -88,11 +88,66 @@ const transformIntoHTML = function(commentsDetails) {
 	return createCommentsTable(comments);
 };
 
+class GuestBook {
+	constructor(url) {
+		this.guestBook = staticFiles.getContent(url);
+	}
+
+	addCommentForm() {
+		return this.guestBook.replace(
+			"#FORM#",
+			staticFiles.getContent("/comment_form.html")
+		);
+	}
+
+	addLoginForm() {
+		return this.guestBook.replace(
+			"#FORM#",
+			staticFiles.getContent("/login_form.html")
+		);
+	}
+
+	guestBookWithCommentForm() {
+		return this.addCommentForm(this.guestBook);
+	}
+
+	guestBookWithLoginForm() {
+		return this.addLoginForm(this.guestBook);
+	}
+}
+
 const renderGuestBook = function(req, res) {
-	let filePath = getFilePath(req.url);
-	fs.readFile(filePath, "utf8", (err, content) => {
-		send(res, 200, content);
-	});
+	const cookie = req.headers["cookie"];
+	req.cookie = cookie;
+	const guestBook = new GuestBook(req.url);
+	content = guestBook.guestBookWithLoginForm();
+	if (req.cookie) {
+		req.cookie = JSON.parse(cookie);
+		let name = req.cookie.userName;
+		content = guestBook.guestBookWithCommentForm();
+		content = content.replace("#NAME#", name);
+	}
+	send(res, 200, content);
+};
+
+const renderModifiedGuestBook = function(req, res) {
+	const guestBook = new GuestBook(req.url);
+	let text = req.body;
+	let { name } = readArgs(text);
+	const cookie = req.headers["cookie"];
+	req.cookie = cookie;
+	let userID;
+	if (!cookie) {
+		userID = new Date().getTime();
+		let user = JSON.stringify({ userName: name, userId: userID });
+		res.setHeader("Set-Cookie", `${user}`);
+	}
+	let content = guestBook.guestBookWithCommentForm();
+	content = content.replace("#NAME#", name);
+	if (!name) {
+		content = guestBook.guestBookWithLoginForm();
+	}
+	send(res, 200, content);
 };
 
 const provideComments = function(req, res) {
@@ -106,10 +161,11 @@ const updateComments = function(req, res) {
 };
 
 app.use(readBody);
-app.use(logRequest);
-//app.get("/guest_book.html", renderGuestBook);
-// app.get("/comments", provideComments);
-// app.post("/comments", updateComments);
+//app.use(logRequest);
+app.get("/guest_book.html", renderGuestBook);
+app.post("/guest_book.html", renderModifiedGuestBook);
+app.get("/comments", provideComments);
+app.post("/comments", updateComments);
 app.use(renderFileContent);
 
 module.exports = app.handleRequest.bind(app);
