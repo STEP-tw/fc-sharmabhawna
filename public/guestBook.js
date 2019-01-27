@@ -9,7 +9,7 @@ const getComments = function() {
 };
 
 const addComment = function() {
-	let name = document.getElementById("name_holder").value;
+	let name = document.getElementById("name_holder").innerText;
 	let comment = document.getElementById("comment_holder").value;
 	let date = new Date();
 	fetch("/comments", {

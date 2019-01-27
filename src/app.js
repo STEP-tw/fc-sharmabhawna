@@ -161,7 +161,7 @@ const updateComments = function(req, res) {
 };
 
 app.use(readBody);
-//app.use(logRequest);
+app.use(logRequest);
 app.get("/guest_book.html", renderGuestBook);
 app.post("/guest_book.html", renderModifiedGuestBook);
 app.get("/comments", provideComments);
